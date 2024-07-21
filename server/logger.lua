@@ -1,5 +1,5 @@
 local FivemerrApiUrl = "https://api.fivemerr.com/v1/logs"
-local FivemerrApiKey = "f59c4362e5a5a62166b7650a7c094716"
+local FivemerrApiKey = "token"
 
 Logger = {
 
