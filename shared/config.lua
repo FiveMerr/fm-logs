@@ -1,0 +1,58 @@
+Config = {
+
+    -- Language to use
+    Language = "en",
+
+    -- Framework for logging player names
+    -- Standalone uses server player name
+    Framework = "qb", -- "qb" | "esx" | "standalone"
+
+    -- Event prefixes
+    ClientEventPrefix = GetCurrentResourceName() .. ":Client:",
+    ServerEventPrefix = GetCurrentResourceName() .. ":Server:",
+
+    -- Log settings
+    Logs = {
+
+        -- Log types
+        Weapon = true, -- Shots fired except for excluded weapons
+        Explosion = true, -- Explosion events except for excluded explosions
+        Damage = true, -- Player damage
+        Death = true, -- Player death
+        Player = true, -- Player events (Join, leave, etc)
+        Chat = true, -- Chat message events
+        Resource = true, -- Resource start / stop
+        System = false, -- System logs
+        TxAdmin = true, -- TxAdmin logs
+
+        -- The following attributes will be included in 
+        -- the log meta data if true.
+        PlayerAttributes = {
+
+            -- Player attributes
+            PlayerId = true,
+            Postals = true,
+            PlayerHealth = true,
+            PlayerArmor = true,
+            PlayerPing = true,
+
+            -- Player IP Logging
+            Ip = true,
+
+            -- Player identifiers
+            DiscordId = true,
+            SteamId = true,
+            License = true,
+        },
+
+        -- Weapon exclusions
+        WeaponsNotLogged = {
+            "WEAPON_SNOWBALL",
+            "WEAPON_FIREEXTINGUISHER",
+            "WEAPON_PETROLCAN"
+        },
+
+        -- Explosion exclusions
+        ExplosionsNotLogged = {},
+    }
+}
