@@ -48,3 +48,7 @@ Framework = "qb", -- "qb" | "esx" | "standalone"
 ```
 
 If you do not use a framework, simply set this to "standalone".
+
+## Credit 
+* [iratetech](https://github.com/ir8scripts)
+* [JD_logsV3](https://github.com/JohnnyS/JD_logsV3)
