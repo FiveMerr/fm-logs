@@ -38,3 +38,13 @@ exports['fm-logs']:createLog({
 ```
 
 The export can be used on both server and client sides.
+
+## Note
+
+This logger does not require a framework, however, if you use QBCore or ESX, you can set these in the config to display the player's character name in the logs on Fivemerr.
+
+```
+Framework = "qb", -- "qb" | "esx" | "standalone"
+```
+
+If you do not use a framework, simply set this to "standalone".
