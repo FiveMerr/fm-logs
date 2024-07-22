@@ -41,7 +41,7 @@ The export can be used on both server and client sides.
 
 ## Note
 
-This logger does not require a framework, however, if you use QBCore or ESX, you can set these in the config to display the player's character name in the logs on Fivemerr.
+This logger does not require a framework, however, if you use QBCore or ESX, you can set these in the config to display the player's character name in the logs on Fivemerr. Setting a framework will also enable the "playerConnected" log in the spawn logs as it will listen to the player loaded event based on the framework specified.
 
 ```
 Framework = "qb", -- "qb" | "esx" | "standalone"
