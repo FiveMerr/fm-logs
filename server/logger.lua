@@ -1,5 +1,20 @@
 Logger = {
 
+    --[[
+        -- Example of a createLog function
+        Logger.CreateLog({
+            LogType = "Player", -- The log type, must be defined in the config
+            Message = "Player action here", -- The message of the log
+            Level = "info", -- The level of the log (can be filtered on Fivemerr)
+            Resource = "script-name", -- Resource where the log is coming from
+            Source = 1, -- Server id for player (Required for Player Attributes to be pulled)
+            Metadata = {} -- Custom attributes to be added
+        })
+
+        This can also be called from server or client side:
+        exports['fm-logs']:createLog(data)
+    ]]--
+
     CreateLog = function (data)
 
         -- If the api token was not provided
