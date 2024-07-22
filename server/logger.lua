@@ -9,13 +9,13 @@ Logger = {
             Resource = "script-name", -- Resource where the log is coming from
             Source = 1, -- Server id for player (Required for Player Attributes to be pulled)
             Metadata = {} -- Custom attributes to be added
-        })
+        }, { Screenshot = true })
 
         This can also be called from server or client side:
-        exports['fm-logs']:createLog(data)
+        exports['fm-logs']:createLog(data, options)
     ]]--
 
-    CreateLog = function (data)
+    CreateLog = function (data, options)
 
         -- If the api token was not provided
         if FivemerrApiKey == "token" then
@@ -30,11 +30,6 @@ Logger = {
         -- If log type is not passed
         if not data.LogType then
             return Logger.ConsoleError('CreateLog: LogType is a required table attribute.')
-        end
-
-        -- If the log type is not valid
-        if not Logger.TableContainsKey(Config.Logs, data.LogType) then
-            return Logger.ConsoleError('CreateLog: LogType[' .. data.LogType .. '] is not a valid log type.')
         end
 
         -- If message is not passed
@@ -62,6 +57,34 @@ Logger = {
             if type(PlayerDetails) == "table" then
                 if #PlayerDetails then
                     logData.metadata.player = PlayerDetails
+                end
+            end
+
+            -- Check options and if Screenshot is set to true
+            if options then
+                if options.Screenshot == true then
+
+                    -- Is set to true when callback is reached for screenshot
+                    local screenshotCallbackReached = false
+
+                    -- Capture the screen
+                    Logger.CapturePlayerScreen(data.Source, function (imageData)
+    
+                        -- Check if it was successful
+                        if not imageData then
+                            Logger.ConsoleError('Unable to capture player screenshot')
+                        else
+                            logData.metadata.screenshot = imageData.url
+                        end
+
+                        -- Tell the script it can move on
+                        screenshotCallbackReached = true
+                    end)
+
+                    -- Wait for screenshot to be finished
+                    while not screenshotCallbackReached do
+                        Wait(50)
+                    end
                 end
             end
         end

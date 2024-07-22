@@ -5,7 +5,7 @@ Config = {
 
     -- Framework for logging player names
     -- Standalone uses server player name
-    Framework = "qb", -- "qb" | "esx" | "standalone"
+    Framework = "standalone", -- "qb" | "esx" | "standalone"
 
     -- Event prefixes
     ClientEventPrefix = GetCurrentResourceName() .. ":Client:",
@@ -24,7 +24,7 @@ Config = {
     -- Log settings
     Logs = {
 
-        -- Log types
+        -- Log enabling settings
         Weapon = true, -- Shots fired except for excluded weapons
         Explosion = true, -- Explosion events except for excluded explosions
         Damage = true, -- Player damage

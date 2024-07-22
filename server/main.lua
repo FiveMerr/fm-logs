@@ -56,6 +56,6 @@ end)
 --- Log Event
 -------------------------------------------------
 RegisterNetEvent(Config.ServerEventPrefix .. 'createLog')
-AddEventHandler (Config.ServerEventPrefix .. 'createLog', function(data)
-    return Logger.CreateLog(data)
+AddEventHandler (Config.ServerEventPrefix .. 'createLog', function(data, options)
+    return Logger.CreateLog(data, options)
 end)

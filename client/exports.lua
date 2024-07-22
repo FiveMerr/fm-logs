@@ -1,6 +1,6 @@
 -------------------------------------------------
 --- Exports
 -------------------------------------------------
-exports('createLog', function (data)
-    TriggerServerEvent(Config.ServerEventPrefix .. 'createLog', data)
+exports('createLog', function (data, options)
+    TriggerServerEvent(Config.ServerEventPrefix .. 'createLog', data, options)
 end)

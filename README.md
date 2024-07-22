@@ -34,18 +34,38 @@ A logging resource for your FiveM server that logs directly to [Fivemerr's](http
 You may use `fm-logs` to leverage custom reporting to Fivemerr by using the following export function:
 
 ```
--- Example of a createLog function
+-- Example of a createLog function with full detail
 exports['fm-logs']:createLog({
-    LogType = "Player", -- The log type, must be defined in Config.Logs
+    LogType = "Player", -- The log type
     Message = "Player action here", -- The message of the log
     Level = "info", -- The level of the log (can be filtered on Fivemerr) (info by default)
     Resource = "script-name", -- Resource where the log is coming from (If not provided, `fm-logs` will be set by default)
     Source = 1, -- Server id for player (Required for Player Attributes to be pulled)
     Metadata = {} -- Custom attributes to be added
-})
+}, { Screenshot = true })
 ```
 
 The export can be used on both server and client sides.
+
+### `CreateLog` Parameters
+
+1. Data : Required (Refer to example above) - The data for the log to be created
+2. Options : Optional (Refer to example above) - Options for log
+
+**Note:** To use `options.Screenshot`, `data.Source` must be provided. If you set `options.Screenshot` to `true` but do not pass a source, a screenshot will NOT be taken.
+
+### Simple Usage Example of Export
+
+```
+exports['fm-logs']:createLog({
+    LogType = "Custom",
+    Resource = "my-custom-script",
+    Message = "The log message here",
+    Metadata = {
+        foo = "bar"
+    }
+})
+```
 
 # Framework Support 
 
