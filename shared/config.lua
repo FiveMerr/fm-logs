@@ -32,7 +32,7 @@ Config = {
         Player = true, -- Player events (Join, leave, etc)
         Chat = true, -- Chat message events
         Resource = true, -- Resource start / stop
-        System = false, -- System logs
+        System = true, -- System logs
         TxAdmin = true, -- TxAdmin logs
         Screenshot = true, -- Screenshot logs
 
