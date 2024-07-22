@@ -51,6 +51,15 @@ Logger = {
             end
         end
 
+        -- Merge any metadata keys here
+        logData.message = Language.ProcessString(logData.message, logData.metadata)
+
+        -- Depending on log type, convert metadata to lines
+        if data.LogType ~= "Resource" then
+            logData.message = logData.message .. "\r\n-------------------------------------------------\r\n"
+            logData.message = logData.message .. Logger.ConvertLogToLines(logData.metadata)
+        end
+
         -- Submit the request
         PerformHttpRequest(FivemerrApiUrls.Logs, function(code, text, headers)
             if code ~= 200 then
@@ -251,5 +260,36 @@ Logger = {
                 ['Content-Type'] = 'application/json'
             })
         end)
+    end,
+
+    -- This will convert the full metadata table (Deep recursive) to new lines.
+    -- To exclude keys, add them to the keysToExclude list below.
+    ConvertLogToLines = function (data, message)
+
+        local keysToExclude = {
+            "Ip",
+            "PlayerPing",
+            "Level",
+            "LogType",
+            "Name",
+            "Resource",
+            "source"
+        }
+
+        if message == nil then
+            message = ""
+        end
+
+        for k, v in pairs(data) do
+            if type(v) == "table" then
+                message = Logger.ConvertLogToLines(v, message)
+            else
+                if not Logger.TableHasValue(keysToExclude, k) then
+                    message = message .. "\r\n" .. k:gsub("^%l", string.upper) .. ": " .. v
+                end
+            end
+        end
+    
+        return message
     end
 }

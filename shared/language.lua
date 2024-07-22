@@ -26,6 +26,11 @@ Language.LoadLocales = function ()
     return false
 end
 
+-- Returns locales set
+Language.GetLocales = function ()
+    return Langage.State.Locales
+end
+
 -- Sets locales that are passed to state
 Language.SetLocales = function (locales)
     if type(locales) ~= "table" then
@@ -55,6 +60,19 @@ Language.Locale = function (key, mergeTags)
     end
 
     return locale
+end
+
+-- Handles a string without validating mergeTags against locale keys
+Language.ProcessString = function (message, mergeTags)
+    for k, v in pairs(mergeTags) do
+        if type(v) == "table" then
+            message = Language.ProcessString(message, v)
+        else
+            message = message:gsub("{" .. string.lower(k) .. "}", v)
+        end
+    end
+
+    return message
 end
 
 -- Outputs a console error
