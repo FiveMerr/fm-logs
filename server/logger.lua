@@ -1,13 +1,10 @@
-local FivemerrApiUrl = "https://api.fivemerr.com/v1/logs"
-local FivemerrApiKey = "token"
-
 Logger = {
 
     CreateLog = function (data)
 
         -- If the api token was not provided
         if FivemerrApiKey == "token" then
-            return Logger.ConsoleError('You have not set your Fivemerr Api Token. Please do so in `server/logger.lua` on line 2')
+            return Logger.ConsoleError('You have not set your Fivemerr Api Token. Please do so in `server/main.lua` on line 2')
         end
 
         -- If data is not a table
@@ -55,7 +52,7 @@ Logger = {
         end
 
         -- Submit the request
-        PerformHttpRequest(FivemerrApiUrl, function(code, text, headers)
+        PerformHttpRequest(FivemerrApiUrls.Logs, function(code, text, headers)
             if code ~= 200 then
                 Logger.ConsoleError('CreateLog: Fivemerr returned error response code: ' .. code)
             end
@@ -222,5 +219,37 @@ Logger = {
         end
 
         return identifiers
+    end,
+
+    -- Captures player screen on client
+    CapturePlayerScreen = function (src, cb)
+
+        -- Verify that src is passed
+        if not src then
+            return Logger.ConsoleError('CapturePlayerScreen requires parameter 1 to be player source.')
+        end
+
+        -- If the api token was not provided
+        if FivemerrApiKey == "token" then
+            return Logger.ConsoleError('You have not set your Fivemerr Api Token. Please do so in `server/main.lua` on line 2')
+        end
+
+        exports['screenshot-basic']:requestClientScreenshot(src, {
+            encoding = 'webp'
+        }, function(err, data)
+            if err then return cb(false) end
+
+            PerformHttpRequest(FivemerrApiUrls.Media, function(status, response)
+                if status ~= 200 then
+                    Logger.ConsoleError('CapturePlayerScreen - Error uploading screenshot. Status returned: ' .. status)
+                    return cb(false)
+                end
+    
+                cb(json.decode(response))
+            end, "POST", json.encode({ data = data }), {
+                ['Authorization'] = tostring(FivemerrApiKey),
+                ['Content-Type'] = 'application/json'
+            })
+        end)
     end
 }

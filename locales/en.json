@@ -17,6 +17,7 @@
     "playerDeathSimple": "{name} has been killed by {responsible}",
     "playerDeathPartial": "{name} has been killed ({reason}) by {responsible}",
     "playerDeathFull": "{name} has been killed ({reason} - {reasonSecondary}) by {responsible}",
+    "playerScreenshot": "Screenshot was taken for player: {name}",
     "explosion": "{name} caused an explosion",
     "chatMessage": "{name} sent a chat message",
     "resourceStart": "{resource} was started",

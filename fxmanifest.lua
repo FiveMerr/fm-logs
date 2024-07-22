@@ -10,12 +10,14 @@ server_script {
     'server/logger.lua',
     'server/main.lua',
     'server/events/*.lua',
+    'server/exports.lua'
 }
 
 -- Client Scripts
 client_script {
     'client/main.lua',
-    'client/logs/*.lua'
+    'client/logs/*.lua',
+    'client/exports.lua'
 }
 
 -- Shared scripts

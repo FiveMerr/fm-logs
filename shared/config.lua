@@ -11,6 +11,16 @@ Config = {
     ClientEventPrefix = GetCurrentResourceName() .. ":Client:",
     ServerEventPrefix = GetCurrentResourceName() .. ":Server:",
 
+    -- Command configuration
+    Commands = {
+
+        -- The command for capturing a screenshot of a player's screen
+        Screenshot = "screenshot",
+
+        -- Permissions for commands
+        Permissions = { "admin" }
+    },
+
     -- Log settings
     Logs = {
 
@@ -24,6 +34,7 @@ Config = {
         Resource = true, -- Resource start / stop
         System = false, -- System logs
         TxAdmin = true, -- TxAdmin logs
+        Screenshot = true, -- Screenshot logs
 
         -- The following attributes will be included in 
         -- the log meta data if true.
