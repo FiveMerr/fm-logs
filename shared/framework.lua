@@ -28,7 +28,7 @@ function Framework.GetCoreObject()
     return Framework.Core
 end
 
-Framework.Core = Config.Framework ~= 'none' and Framework.GetCoreObject() or nil
+Framework.Core = Config.Framework ~= 'standalone' and Framework.GetCoreObject() or nil
 
 ------------------------------------------------------------
 --                  FRAMEWORK SERVER FUNCTIONS
