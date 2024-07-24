@@ -5,7 +5,7 @@ CreateThread(function()
 	local Health = nil
 	while Config.Logs.Damage do
 		local pedHealth = GetEntityHealth(cache.ped)
-		local newHealth = math.floor(pedHealth) / 2
+		local newHealth = pedHealth / 2
 
 		if not Health then
 			Health = newHealth
@@ -15,7 +15,7 @@ CreateThread(function()
             
 			if Health > newHealth then
 				-- Trigger the server event to log
-				TriggerServerEvent(Config.ServerEventPrefix .. 'playerDamage', math.floor((Health - newHealth)))
+				TriggerServerEvent(Config.ServerEventPrefix .. 'playerDamage', math.floor(Health - newHealth))
 			end
 			
             -- Update the health tracking variable
