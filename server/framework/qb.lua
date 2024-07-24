@@ -15,7 +15,7 @@ if Config.Logs.Framework and Config.Framework == "qb" then
 
         -- Create the log with the data passed from qb-log
         Logger.CreateLog({
-            LogType = "QBCore",
+            LogType = "Framework",
             Level = tagEveryone and 'warn' or 'info',
             Message = title .. " - " .. message:gsub("*", ""),
             Resource = "qb-logs",
