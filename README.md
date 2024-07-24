@@ -12,7 +12,7 @@ A logging resource for your FiveM server that logs directly to [Fivemerr's](http
 1. Add your Fivemer Logs API token to `server.cfg`
 ```
 # Fivemerr Api Token
-set fivemerr:apyToken "token"
+set fivemerr:apiToken "token"
 ```
 
 2. Configure your framework or standalone on `shared > config.lua` line 8. 
