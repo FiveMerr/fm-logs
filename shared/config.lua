@@ -5,7 +5,7 @@ Config = {
 
     -- Framework for logging player names
     -- Standalone uses server player name
-    Framework = "qb", -- "qb" | "esx" | "standalone"
+    Framework = "standalone", -- "qb" | "esx" | "standalone"
 
     -- Event prefixes
     ClientEventPrefix = GetCurrentResourceName() .. ":Client:",
@@ -35,7 +35,7 @@ Config = {
         System = true, -- System logs
         TxAdmin = true, -- TxAdmin logs
         Screenshot = true, -- Screenshot logs
-        Framework = true, -- Will log framework logs if applicable
+        Framework = false, -- Will log framework logs if applicable
 
         -- The following attributes will be included in 
         -- the log meta data if true.
