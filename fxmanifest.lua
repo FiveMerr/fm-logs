@@ -1,4 +1,4 @@
-version '1.0.0'
+version '1.0.1'
 author 'Fivemerr'
 description 'FXServer logs to Fivemerr'
 repository 'https://github.com/FiveMerr/fm-logs'
@@ -10,6 +10,7 @@ server_script {
     'server/logger.lua',
     'server/main.lua',
     'server/events/*.lua',
+    'server/framework/*lua',
     'server/exports.lua'
 }
 
