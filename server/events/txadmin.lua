@@ -26,6 +26,23 @@ AddEventHandler('txAdmin:events:scheduledRestart', function(data)
     })
 end)
 
+-- DM logs
+AddEventHandler('txAdmin:events:playerDirectMessage', function(data)
+    -- If this log is not enabled, just return early
+    if not Config.Logs.TxAdmin then return end
+
+    
+    Logger.CreateLog({
+        LogType = "TxAdmin",
+        Message = "Player DM",
+        Metadata = {
+            name = names[data.target],
+            author = data.author,
+            message = data.message
+        }
+    })
+end)
+
 -- When a player is kicked
 AddEventHandler('txAdmin:events:playerKicked', function(data)
 	-- If this log is not enabled, just return early

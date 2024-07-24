@@ -1,5 +1,6 @@
--- Your API key for Fivemerr
-FivemerrApiKey = "token"
+-------------------------------------------------
+--- Setup
+-------------------------------------------------
 
 -- API Urls
 FivemerrApiUrls = {
@@ -10,15 +11,37 @@ FivemerrApiUrls = {
 -- Load the language locales
 Language.SetLanguage(Config.Language).LoadLocales()
 
+-------------------------------------------------
+--- Logger status / version
+-------------------------------------------------
+
+-- Get the version
 local version = GetResourceMetadata(GetCurrentResourceName(), 'version')
 
+-- Output the status of the logger
 print('--------------------------------------------------')
 print('|                                                |')
 print('|                 FIVEMERR LOGGER                |')
-print('|                     STARTED                    |')
+
+-- Check if api token is set
+if not Logger.RetrieveApiToken() then
+    print('|                   ^1NOT STARTED^0                  |')
+else
+    print('|                     ^2STARTED^0                    |')
+end
+
 print('|                  VERSION ' .. version .. '                 |')
 print('|                                                |')
 print('--------------------------------------------------')
+
+-- If the api token is not set
+if not Logger.RetrieveApiToken() then
+    Logger.ApiTokenError()
+end
+
+-------------------------------------------------
+--- Callbacks
+-------------------------------------------------
 
 -- Return locales from language state
 lib.callback.register(Config.ServerEventPrefix .. 'retrieveLocales', function ()

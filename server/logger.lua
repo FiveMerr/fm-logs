@@ -18,8 +18,8 @@ Logger = {
     CreateLog = function (data, options)
 
         -- If the api token was not provided
-        if FivemerrApiKey == "token" then
-            return Logger.ConsoleError('You have not set your Fivemerr Api Token. Please do so in `server/main.lua` on line 2')
+        if not Logger.RetrieveApiToken() then
+            return Logger.ApiTokenError()
         end
 
         -- If data is not a table
@@ -93,16 +93,9 @@ Logger = {
         logData.message = Language.ProcessString(logData.message, logData.metadata)
 
         -- Depending on log type, convert metadata to lines
-        if data.LogType ~= "Resource" then
-
-            -- Only include the meta data in the message payload
-            -- if it has more than one key:value pair.
-            if logData.metadata then
-                if #logData.metadata > 1 then
-                    logData.message = logData.message .. "\r\n-------------------------------------------------\r\n"
-                    logData.message = logData.message .. Logger.ConvertLogToLines(logData.metadata)
-                end
-            end
+        if data.LogType ~= "Resource" and data.LogType ~= "Framework" then
+            logData.message = logData.message .. "\r\n-------------------------------------------------\r\n"
+            logData.message = logData.message .. Logger.ConvertLogToLines(logData.metadata)
         end
 
         -- Submit the request
@@ -110,12 +103,17 @@ Logger = {
             if code ~= 200 then
                 Logger.ConsoleError('CreateLog: Fivemerr returned error response code: ' .. code)
             end
-        end, 'POST', json.encode(logData), { ['Content-Type'] = 'application/json', ['Authorization'] = tostring(FivemerrApiKey) })
+        end, 'POST', json.encode(logData), { ['Content-Type'] = 'application/json', ['Authorization'] = Logger.RetrieveApiToken() })
     end,
 
     -- Outputs a console error
     ConsoleError = function (message)
         print('^1Error:^0 ' .. message)
+    end,
+
+    -- Outputs api token error to console
+    ApiTokenError = function ()
+        print('^1Error: You have not set your Fivemerr Api token in your server.cfg. Please refer to the README.^0')
     end,
 
     -- Checks a table to see if a key exists
@@ -284,8 +282,8 @@ Logger = {
         end
 
         -- If the api token was not provided
-        if FivemerrApiKey == "token" then
-            return Logger.ConsoleError('You have not set your Fivemerr Api Token. Please do so in `server/main.lua` on line 2')
+        if not Logger.RetrieveApiToken() then
+            return Logger.ApiTokenError()
         end
 
         exports['screenshot-basic']:requestClientScreenshot(src, {
@@ -301,7 +299,7 @@ Logger = {
     
                 cb(json.decode(response))
             end, "POST", json.encode({ data = data }), {
-                ['Authorization'] = tostring(FivemerrApiKey),
+                ['Authorization'] = Logger.RetrieveApiToken(),
                 ['Content-Type'] = 'application/json'
             })
         end)
@@ -336,5 +334,12 @@ Logger = {
         end
     
         return message
+    end,
+
+    -- Checks if the convar is provided in server.cfg
+    RetrieveApiToken = function ()
+        local token = GetConvar('fivemerr:apiToken', 'token')
+        if token == 'token' then return false end
+        return tostring(token)
     end
 }
