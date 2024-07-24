@@ -94,8 +94,15 @@ Logger = {
 
         -- Depending on log type, convert metadata to lines
         if data.LogType ~= "Resource" then
-            logData.message = logData.message .. "\r\n-------------------------------------------------\r\n"
-            logData.message = logData.message .. Logger.ConvertLogToLines(logData.metadata)
+
+            -- Only include the meta data in the message payload
+            -- if it has more than one key:value pair.
+            if logData.metadata then
+                if #logData.metadata > 1 then
+                    logData.message = logData.message .. "\r\n-------------------------------------------------\r\n"
+                    logData.message = logData.message .. Logger.ConvertLogToLines(logData.metadata)
+                end
+            end
         end
 
         -- Submit the request
