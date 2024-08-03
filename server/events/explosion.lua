@@ -105,7 +105,7 @@ AddEventHandler('explosionEvent', function(source, ev)
             Source = src,
             Metadata = {
                 Name = Framework.Server.GetPlayerName(src),
-                Type = explosionNames[explosionTypes[ev.explosionType + 1]]
+                Type = Language.Locale(explosionTypes[ev.explosionType + 1]) or explosionNames[explosionTypes[ev.explosionType + 1]]
             }
         })
     end

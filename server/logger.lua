@@ -24,17 +24,17 @@ Logger = {
 
         -- If data is not a table
         if type(data) ~= "table" then
-            return Logger.ConsoleError('CreateLog: Parameter 1 is required to be of type "table"')
+            return Logger.ConsoleError(Language.Locale("loggerParamError"))
         end
 
         -- If log type is not passed
         if not data.LogType then
-            return Logger.ConsoleError('CreateLog: LogType is a required table attribute.')
+            return Logger.ConsoleError(Language.Locale("loggerLogTypeError"))
         end
 
         -- If message is not passed
         if not data.Message then
-            return Logger.ConsoleError('CreateLog: Message is a required table attribute.')
+            return Logger.ConsoleError(Language.Locale("loggerMessageError"))
         end
 
         -- Setup the log data table
@@ -69,10 +69,10 @@ Logger = {
 
                     -- Capture the screen
                     Logger.CapturePlayerScreen(data.Source, function (imageData)
-    
+
                         -- Check if it was successful
                         if not imageData then
-                            Logger.ConsoleError('Unable to capture player screenshot')
+                            Logger.ConsoleError(Language.Locale("playerScreenshotError"))
                         else
                             logData.metadata.screenshot = imageData.url
                         end
@@ -101,7 +101,9 @@ Logger = {
         -- Submit the request
         PerformHttpRequest(FivemerrApiUrls.Logs, function(code, text, headers)
             if code ~= 200 then
-                Logger.ConsoleError('CreateLog: Fivemerr returned error response code: ' .. code)
+                Logger.ConsoleError(Language.Locale("loggerFivemerrError", {
+                    code = code
+                }))
             end
         end, 'POST', json.encode(logData), { ['Content-Type'] = 'application/json', ['Authorization'] = Logger.RetrieveApiToken() })
     end,
@@ -113,7 +115,7 @@ Logger = {
 
     -- Outputs api token error to console
     ApiTokenError = function ()
-        print('^1Error: You have not set your Fivemerr Api token in your server.cfg. Please refer to the README.^0')
+        print("^1"..Language.Locale("loggerNoTokenError").."^0")
     end,
 
     -- Checks a table to see if a key exists
@@ -155,9 +157,9 @@ Logger = {
         local minutes = math.floor(sec / 60)
         local seconds = sec - minutes * 60
         if minutes == 0 then
-            return string.format("%d seconds.", seconds)
+            return string.format("%d %s.", seconds, Language.Locale("loggerSeconds"))
         else
-            return string.format("%d minutes, %d seconds.", minutes, seconds)
+            return string.format("%d %s, %d %s.", minutes, Language.Locale("loggerMinutes"), seconds, Language.Locale("loggerSeconds"))
         end
     end,
 
@@ -187,37 +189,37 @@ Logger = {
         end
 
         if Config.Logs.PlayerAttributes.Ip then
-            playerDetails.Ip = identifiers.ip and identifiers.ip:gsub("ip:", "") or "Not Available"
+            playerDetails.Ip = identifiers.ip and identifiers.ip:gsub("ip:", "") or Language.Locale("loggerNotAvailable")
         end
 
         if Config.Logs.PlayerAttributes.DiscordId then
-            playerDetails.DiscordId = identifiers.discord and identifiers.discord:gsub("discord:", "") or "Not Available"
+            playerDetails.DiscordId = identifiers.discord and identifiers.discord:gsub("discord:", "") or Language.Locale("loggerNotAvailable")
         end
 
         if Config.Logs.PlayerAttributes.SteamId then
-            playerDetails.SteamId = identifiers.steam and identifiers.steam:gsub("steam:", "") or "Not Available"
+            playerDetails.SteamId = identifiers.steam and identifiers.steam:gsub("steam:", "") or Language.Locale("loggerNotAvailable")
         end
 
         if Config.Logs.PlayerAttributes.License then
-            playerDetails.License = identifiers.license and identifiers.license:gsub("license:", "") or "Not Available"
-            playerDetails.License2 = identifiers.license2 and identifiers.license2:gsub("license2:", "") or "Not Available"
+            playerDetails.License = identifiers.license and identifiers.license:gsub("license:", "") or Language.Locale("loggerNotAvailable")
+            playerDetails.License2 = identifiers.license2 and identifiers.license2:gsub("license2:", "") or Language.Locale("loggerNotAvailable")
         end
 
         return playerDetails
     end,
-    
+
     -- Gets the player's postal
     GetPlayerPostal = function (src)
         local postalsFile = LoadResourceFile(GetCurrentResourceName(), "./json/postals.json")
         local postals = json.decode(postalsFile)
         local nearest = nil
-    
+
         local player = src
         local ped = GetPlayerPed(player)
         local playerCoords = GetEntityCoords(ped)
-    
+
         local x, y = table.unpack(playerCoords)
-    
+
         local ndm = -1
         local ni = -1
         for i, p in ipairs(postals) do
@@ -227,7 +229,7 @@ Logger = {
                 ndm = dm
             end
         end
-    
+
         if ni ~= -1 then
             local nd = math.sqrt(ndm)
             nearest = {i = ni, d = nd}
@@ -278,7 +280,7 @@ Logger = {
 
         -- Verify that src is passed
         if not src then
-            return Logger.ConsoleError('CapturePlayerScreen requires parameter 1 to be player source.')
+            return Logger.ConsoleError(Language.Locale("loggerScreenCapError")'CapturePlayerScreen requires parameter 1 to be player source.')
         end
 
         -- If the api token was not provided
@@ -293,10 +295,12 @@ Logger = {
 
             PerformHttpRequest(FivemerrApiUrls.Media, function(status, response)
                 if status ~= 200 then
-                    Logger.ConsoleError('CapturePlayerScreen - Error uploading screenshot. Status returned: ' .. status)
+                    Logger.ConsoleError(Language.Locale("loggerScreenUploadError", {
+                        status = status
+                    })'CapturePlayerScreen - Error uploading screenshot. Status returned: ' .. status)
                     return cb(false)
                 end
-    
+
                 cb(json.decode(response))
             end, "POST", json.encode({ data = data }), {
                 ['Authorization'] = Logger.RetrieveApiToken(),
@@ -332,7 +336,7 @@ Logger = {
                 end
             end
         end
-    
+
         return message
     end,
 
