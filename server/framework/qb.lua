@@ -3,7 +3,7 @@
 --- Event handler for qb-logs
 -------------------------------------------------
 if Config.Logs.Framework and Config.Framework == "qb" then
-    AddEventHandler('qb-log:server:CreateLog', function(name, title, color, message, tagEveryone, imageUrl)
+    RegisterNetEvent('qb-log:server:CreateLog', function(name, title, color, message, tagEveryone, imageUrl)
 
         -- Events from QB to exclude
         local EventsToExclude = {
@@ -16,11 +16,14 @@ if Config.Logs.Framework and Config.Framework == "qb" then
         -- Create the log with the data passed from qb-log
         Logger.CreateLog({
             LogType = "Framework",
-            Level = tagEveryone and 'warn' or 'info',
+            Level = 'warn' or 'info',
             Message = title .. " - " .. message:gsub("*", ""),
             Resource = "qb-logs",
             Metadata = {
-                image = imageUrl
+                description = message,
+                playerId = source,
+                playerLicense = GetPlayerIdentifierByType(source, 'license'),
+                playerDiscord = GetPlayerIdentifierByType(source, 'discord')
             }
         })
     end)
