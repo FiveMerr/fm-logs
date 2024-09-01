@@ -1,4 +1,4 @@
-version '1.0.2'
+version '1.0.3'
 author 'Fivemerr'
 description 'FXServer logs to Fivemerr'
 repository 'https://github.com/FiveMerr/fm-logs'
