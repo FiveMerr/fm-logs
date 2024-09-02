@@ -8,7 +8,7 @@ AddEventHandler(Config.ServerEventPrefix .. 'playerScreenshot', function(Target)
 
         -- Check if it was successful
         if not imageData then
-            return Logger.ConsoleError('Unable to capture player screenshot')
+            return Logger.ConsoleError(Language.Locale('playerScreenshotError'))
         end
 
         -- If this log is not enabled, just return early

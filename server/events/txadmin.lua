@@ -22,7 +22,9 @@ AddEventHandler('txAdmin:events:scheduledRestart', function(data)
 
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = ("The server will restart in %s"):format(Logger.SecondsToClock(data.secondsRemaining))
+        Message = Language.Locale("txRestartServer", {
+            time = Logger.SecondsToClock(data.secondsRemaining)
+        })
     })
 end)
 
@@ -31,10 +33,10 @@ AddEventHandler('txAdmin:events:playerDirectMessage', function(data)
     -- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-    
+
     Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = "Player DM",
+        Message = Language.Locale("txDM"),
         Metadata = {
             name = names[data.target],
             author = data.author,
@@ -48,10 +50,10 @@ AddEventHandler('txAdmin:events:playerKicked', function(data)
 	-- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-	
+
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = "Player Kicked",
+        Message = Language.Locale("txKicked"),
 		Metadata = {
 			name = names[data.target],
 			author = data.author,
@@ -65,10 +67,10 @@ AddEventHandler('txAdmin:events:playerWarned', function(data)
 	-- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-	
+
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = "Player Warned",
+        Message = Language.Locale("txWarned"),
 		Metadata = {
 			actionid = data.actionId,
 			name = GetPlayerName(data.target),
@@ -83,10 +85,10 @@ AddEventHandler('txAdmin:events:playerBanned', function(data)
 	-- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-	
+
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = "Player Banned",
+        Message = Language.Locale("txBanned"),
 		Metadata = {
 			actionid = data.actionId,
 			name = names[data.target],
@@ -102,10 +104,10 @@ AddEventHandler('txAdmin:events:playerWhitelisted', function(data)
 	-- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-	
+
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = "Player Whitelisted",
+        Message = Language.Locale("txWhitelist"),
 		Metadata = {
 			actionid = data.actionId,
 			target = data.target,
@@ -119,10 +121,10 @@ AddEventHandler('txAdmin:event:configChanged', function()
 	-- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-	
+
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = "Server.cfg updated",
+        Message = Language.Locale("txCfg"),
 		Metadata = {
 			author = data.target,
 		}
@@ -134,13 +136,13 @@ AddEventHandler('txAdmin:events:healedPlayer', function(data)
 	-- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-	
+
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = data.id == -1 and "Whole server healed" or "Player was healed",
+        Message = data.id == -1 and Language.Locale("txHealServer") or Language.Locale("txHealPlayer"),
 		Metadata = {
 			target = data.id,
-			name = data.id == -1 and "Everyone" or GetPlayerName(data.id)
+			name = data.id == -1 and Language.Locale("txEveryone") or GetPlayerName(data.id)
 		}
     })
 end)
@@ -150,10 +152,10 @@ AddEventHandler('txAdmin:events:announcement', function(data)
 	-- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-	
+
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = "Created an Announcement",
+        Message = Language.Locale("txAnnouncement"),
 		Metadata = {
 			author = data.author,
 			message = data.message
@@ -166,10 +168,12 @@ AddEventHandler('txAdmin:events:serverShuttingDown', function(data)
 	-- If this log is not enabled, just return early
     if not Config.Logs.TxAdmin then return end
 
-	
+
 	Logger.CreateLog({
         LogType = "TxAdmin",
-        Message = "Server will shutdown in " .. Logger.SecondsToClock(data.delay / 1000),
+        Message = Language.Locale("txShutdownServer", {
+            time = Logger.SecondsToClock(data.delay / 1000)
+        }),
 		Metadata = {
 			author = data.author,
 			message = data.message

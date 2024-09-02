@@ -57,12 +57,12 @@ end)
 --- Commands
 -------------------------------------------------
 lib.addCommand(Config.Commands.Screenshot, {
-    help = 'Take screenshot of player\'s screen',
+    help = Language.Locale("commandScreenshotHelp"),
     params = {
         {
             name = 'target',
             type = 'playerId',
-            help = 'Target player\'s server id',
+            help = Language.Locale("commandScreenshotTargetHelp"),
         },
     },
     restricted = Config.Commands.Permissions
